@@ -121,6 +121,21 @@ npm install -g conventional-changelog-cli
 
 ### Como fazer um release
 
+Para automatizar o processo de release, utilize o Makefile incluso no projeto. Ele garante que o código está formatado, gera o changelog e cria a tag de versão automaticamente.
+
+Execute:
+
+```sh
+make release
+```
+
+Esse comando executa, em ordem:
+- `./gradlew ktlintCheck` — Garante que o código está em conformidade com as regras de estilo.
+- `./gradlew generateChangelog` — Atualiza o `CHANGELOG.md` com base nos commits.
+- `./gradlew reckonTagPush` — Cria e envia a tag de versão baseada nos Conventional Commits.
+
+Se preferir, você ainda pode executar cada etapa manualmente conforme descrito abaixo:
+
 1.  **Desenvolva e faça commits** seguindo o padrão Conventional Commits.
     - `feat:` para novas funcionalidades (resultará em um release `minor`).
     - `fix:` para correções de bugs (resultará em um release `patch`).
@@ -143,7 +158,6 @@ npm install -g conventional-changelog-cli
     # Para forçar um release minor (ex: 0.1.1 -> 0.2.0)
     ./gradlew reckonTagPush -Preckon.scope=minor
     ```
-
 -----
 
 ## 🤝 Como Contribuir
