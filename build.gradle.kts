@@ -59,13 +59,7 @@ tasks.check {
 // pré-requisito: npm install -g conventional-changelog-cli --registry=https://registry.npmjs.org/
 tasks.register("generateChangelog", Exec::class) {
     description = "Gera o CHANGELOG.md a partir dos conventional commits."
-    // Usa a propriedade 'version' se passada pelo Makefile, senão o CLI tenta inferir.
-    val releaseVersion = project.findProperty("version")?.toString()
-    val changelogArgs = mutableListOf("-p", "eslint", "-i", "CHANGELOG.md", "-s", "-k", "package.json")
-    if (releaseVersion != null) {
-        changelogArgs.addAll(listOf("--release-as", releaseVersion))
-    }
-    commandLine("conventional-changelog", *changelogArgs.toTypedArray())
+    commandLine("conventional-changelog", "-p", "eslint", "-i", "CHANGELOG.md", "-s", "--release-count", "1", "append", "true")
     isIgnoreExitValue = true
 }
 
