@@ -110,13 +110,13 @@ O projeto utiliza o Ktlint para garantir um estilo de código consistente.
 
 ## Versionamento e Release
 
-O projeto utiliza **Git, Conventional Commits e o plugin Reckon** para automatizar o versionamento e a geração de changelogs. A versão não é mais fixada no `build.gradle.kts`, mas sim inferida a partir das tags do Git.
+O projeto utiliza **Git, Conventional Commits e o plugin Axion-Release** para automatizar o versionamento e a geração de changelogs. A versão é inferida a partir das tags do Git.
 
 ### Pré-requisitos
 
 Para gerar o changelog, você precisa ter o `conventional-changelog-cli` instalado globalmente. Execute uma única vez:
 ```sh
-npm install -g conventional-changelog-cli
+npm install -g conventional-changelog-cli --registry=https://registry.npmjs.org/
 ```
 
 ### Como fazer um release
