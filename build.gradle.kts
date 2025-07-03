@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-	id("org.ajoberstar.reckon") version "0.18.1"
+    id("org.ajoberstar.reckon") version "0.18.1"
 }
 
 group = "com.nazarethlabs"
@@ -57,8 +57,8 @@ tasks.check {
 
 // reckon para inferir a versão a partir do Git
 reckon {
-	scopeFromProp()
-	stageFromProp("alpha", "beta", "rc", "final")
+    scopeFromProp()
+    stageFromProp("alpha", "beta", "rc", "final")
 }
 
 // tarefa para gerar o CHANGELOG.md usando conventional-changelog-cli
@@ -70,5 +70,5 @@ tasks.register("generateChangelog", Exec::class) {
 }
 
 tasks.processResources {
-	expand(project.properties)
+    expand(project.properties)
 }
