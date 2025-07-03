@@ -4,10 +4,12 @@ plugins {
     id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+	id("org.ajoberstar.reckon") version "0.18.1"
 }
 
 group = "com.nazarethlabs"
-version = "0.0.1-SNAPSHOT"
+// versão gerenciada pelo plugin Reckon a partir das tags do Git
+// version = "x.x.x"
 
 java {
     toolchain {
@@ -51,4 +53,22 @@ ktlint {
 // a verificação do Ktlint é executada junto com a task 'check' (ex: ./gradlew build)
 tasks.check {
     dependsOn(tasks.ktlintCheck)
+}
+
+// reckon para inferir a versão a partir do Git
+reckon {
+	scopeFromProp()
+	stageFromProp("alpha", "beta", "rc", "final")
+}
+
+// tarefa para gerar o CHANGELOG.md usando conventional-changelog-cli
+// pré-requisito: npm install -g conventional-changelog-cli --registry=https://registry.npmjs.org/
+tasks.register("generateChangelog", Exec::class) {
+    description = "Gera o CHANGELOG.md a partir dos conventional commits."
+    commandLine("conventional-changelog", "-p", "eslint", "-i", "CHANGELOG.md", "-s")
+    isIgnoreExitValue = true
+}
+
+tasks.processResources {
+	expand(project.properties)
 }

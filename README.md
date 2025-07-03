@@ -108,6 +108,42 @@ O projeto utiliza o Ktlint para garantir um estilo de código consistente.
 - `./gradlew ktlintCheck` — Verifica se o código está em conformidade com as regras.
 - `./gradlew ktlintFormat` — Formata o código automaticamente para corrigir violações.
 
+## Versionamento e Release
+
+O projeto utiliza **Git, Conventional Commits e o plugin Reckon** para automatizar o versionamento e a geração de changelogs. A versão não é mais fixada no `build.gradle.kts`, mas sim inferida a partir das tags do Git.
+
+### Pré-requisitos
+
+Para gerar o changelog, você precisa ter o `conventional-changelog-cli` instalado globalmente. Execute uma única vez:
+```sh
+npm install -g conventional-changelog-cli
+```
+
+### Como fazer um release
+
+1.  **Desenvolva e faça commits** seguindo o padrão Conventional Commits.
+    - `feat:` para novas funcionalidades (resultará em um release `minor`).
+    - `fix:` para correções de bugs (resultará em um release `patch`).
+    - Adicione `BREAKING CHANGE:` no rodapé do commit para um release `major`.
+
+2.  **Gere o Changelog:** Rode o comando para atualizar o arquivo `CHANGELOG.md` com as últimas mudanças.
+    ```sh
+    ./gradlew generateChangelog
+    ```
+3.  **Faça o commit do Changelog:** Adicione o `CHANGELOG.md` atualizado em um commit.
+    ```sh
+    git add CHANGELOG.md
+    git commit -m "docs: update changelog for release"
+    ```
+4.  **Crie e envie a tag de versão:** Use a tarefa `reckonTagPush` para criar a tag Git e enviá-la para o repositório remoto. O plugin calculará a próxima versão (patch, minor ou major) automaticamente com base nos seus commits.
+    ```sh
+    # Para um release de patch (ex: 0.1.0 -> 0.1.1)
+    ./gradlew reckonTagPush
+
+    # Para forçar um release minor (ex: 0.1.1 -> 0.2.0)
+    ./gradlew reckonTagPush -Preckon.scope=minor
+    ```
+
 -----
 
 ## 🤝 Como Contribuir
