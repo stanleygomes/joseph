@@ -2,11 +2,11 @@ spring:
   application:
     name: joseph
   datasource:
-    url: jdbc:postgresql://localhost:5432/joseph
+    url: jdbc:postgresql://localhost:5555/joseph
     username: joseph
     password: egypt-governor
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true

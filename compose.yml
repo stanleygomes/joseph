@@ -1,16 +1,22 @@
 version: '3.8'
 
+networks:
+  joseph-net:
+    driver: bridge
+
 services:
-  db:
+  postgres:
     image: docker.io/library/postgres:15
-    container_name: database
+    container_name: joseph-database-postgres
     restart: always
+    networks:
+      - joseph-net
     environment:
       POSTGRES_DB: joseph
       POSTGRES_USER: joseph
       POSTGRES_PASSWORD: egypt-governor
     ports:
-      - "5432:5432"
+      - "5555:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
