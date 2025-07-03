@@ -100,3 +100,29 @@ Para rodar em modo debug e conectar um depurador na porta `5005`:
 - `./gradlew build` — Compila o projeto
 - `./gradlew test` — Executa os testes
 
+-----
+
+## 🤝 Como Contribuir
+
+Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repositório:
+
+1.  **Crie uma Branch** para sua nova feature ou correção. Use um nome descritivo (em inglês) e siga um padrão, como `feature/minha-nova-feature` ou `fix/corrige-bug-x`:
+  ```bash
+  git checkout -b feature/minha-nova-feature
+  ```
+2.  **Desenvolva e Faça o Commit** de suas mudanças. Escreva mensagens de commit claras e significativas seguindo o padrão [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+  ```bash
+  git commit -m "feat: Adiciona nova funcionalidade de busca por tags"
+  ```
+3.  **Faça o Push** para a sua branch:
+  ```bash
+  git push origin feature/minha-nova-feature
+  ```
+4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descrição deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
+
+-----
+
+## 📜 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE.md` para mais detalhes.
+
