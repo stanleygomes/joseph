@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class JosephApplication
 
 fun main(args: Array<String>) {
-	runApplication<JosephApplication>(*args)
+    runApplication<JosephApplication>(*args)
 }

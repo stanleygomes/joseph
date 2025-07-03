@@ -32,6 +32,8 @@ Essa estrutura promove alta coesão e baixo acoplamento entre as funcionalidades
 - Gradle
 - Podman e Podman Compose
 
+IDE recomendata: [Intelij IDEA](https://www.jetbrains.com/idea/download/?section=linux)
+
 ## Database Migrations com Flyway
 
 O projeto utiliza o Flyway para gerenciar a evolução do esquema do banco de dados. O Spring Boot está configurado para executar automaticamente as migrações pendentes sempre que a aplicação é iniciada.
@@ -100,6 +102,12 @@ Para rodar em modo debug e conectar um depurador na porta `5005`:
 - `./gradlew build` — Compila o projeto
 - `./gradlew test` — Executa os testes
 
+### Qualidade de Código com Ktlint
+
+O projeto utiliza o Ktlint para garantir um estilo de código consistente.
+- `./gradlew ktlintCheck` — Verifica se o código está em conformidade com as regras.
+- `./gradlew ktlintFormat` — Formata o código automaticamente para corrigir violações.
+
 -----
 
 ## 🤝 Como Contribuir
@@ -125,4 +133,3 @@ Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repo
 ## 📜 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE.md` para mais detalhes.
-
