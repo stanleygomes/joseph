@@ -1,0 +1,14 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "/home/stanley/Downloads/softwares/jdk-21.0.7",
+            "default": true
+        }
+    ],
+    "java.jdt.ls.java.home": "/home/stanley/Downloads/softwares/jdk-21.0.7",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "kotlin.compiler.jvmTarget": "21",
+    "editor.codeActionsOnSave": {},
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
