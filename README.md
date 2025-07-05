@@ -1,18 +1,18 @@
 # Joseph 🧑‍💻
 
-Projeto Spring Boot + Kotlin
+Projeto Spring Boot + Kotlin 🚀
 
 Este projeto é um exemplo básico de aplicação Spring Boot escrita em Kotlin, configurada para rodar com Java 21.
 
-## Sobre o projeto
+## Sobre o projeto 📈
 
 Joseph é uma aplicação para cuidar de finanças pessoais, com foco inicial em ações (bolsa de valores). O objetivo é ajudar no controle, análise e acompanhamento de investimentos.
 
-### Motivação do nome
+### Motivação do nome 🏺
 
 O nome "Joseph" faz referência a José do Egito, personagem bíblico conhecido por sua sabedoria em administrar recursos e planejar para o futuro. Assim como José ajudou o Egito a se preparar para tempos de abundância e escassez, esta aplicação busca auxiliar no planejamento e gestão financeira.
 
-## Arquitetura
+## Arquitetura 🏗️
 
 O projeto adota a **Vertical Slice Architecture** (Arquitetura de Fatia Vertical).
 
@@ -29,12 +29,12 @@ Essa estrutura promove alta coesão e baixo acoplamento entre as funcionalidades
 ## Requisitos
 
 - Java 21 ☕
-- Gradle
-- Podman e Podman Compose
+- Gradle 🛠️
+- Podman e Podman Compose 🐳
 
 IDE recomendata: [Intelij IDEA](https://www.jetbrains.com/idea/download/?section=linux)
 
-## Database Migrations com Flyway
+## Database Migrations com Flyway 🦅
 
 O projeto utiliza o Flyway para gerenciar a evolução do esquema do banco de dados. O Spring Boot está configurado para executar automaticamente as migrações pendentes sempre que a aplicação é iniciada.
 
@@ -67,7 +67,7 @@ Ao iniciar a aplicação, o Flyway detectará este novo arquivo, executará o sc
 
 ## Como Executar
 
-### 1. Iniciar o Banco de Dados
+### 1. Iniciar o Banco de Dados 🗄️
 
 O projeto utiliza Podman Compose para gerenciar o container do banco de dados PostgreSQL, conforme definido no arquivo `podman-compose.yml`.
 
@@ -83,7 +83,7 @@ Para parar e remover o container, execute:
 podman-compose down
 ```
 
-### 2. Executar a Aplicação
+### 2. Executar a Aplicação ▶️
 
 Com o banco de dados em execução, você pode rodar a aplicação Spring Boot:
 
@@ -97,18 +97,27 @@ Para rodar em modo debug e conectar um depurador na porta `5005`:
 ./gradlew bootRun --debug-jvm
 ```
 
-## Scripts úteis
+### 📜 Documentação da API (Swagger)
+
+O projeto utiliza o Springdoc para gerar automaticamente a documentação da API no formato OpenAPI 3. Essa documentação é interativa e permite visualizar e testar todos os endpoints disponíveis diretamente pelo navegador.
+
+Com a aplicação em execução, você pode acessar a documentação através dos seguintes links:
+
+- [Swagger UI (Interface Gráfica)](http://localhost:8080/docs)
+- [Definição OpenAPI (JSON)](http://localhost:8080/api-docs)
+
+## Scripts úteis ⚙️
 
 - `./gradlew build` — Compila o projeto
 - `./gradlew test` — Executa os testes
 
-### Qualidade de Código com Ktlint
+### Qualidade de Código com Ktlint 🎨
 
 O projeto utiliza o Ktlint para garantir um estilo de código consistente.
 - `./gradlew ktlintCheck` — Verifica se o código está em conformidade com as regras.
 - `./gradlew ktlintFormat` — Formata o código automaticamente para corrigir violações.
 
-## Versionamento e Release
+## Versionamento e Release 🏷️
 
 O projeto utiliza **Git, Conventional Commits e o plugin Axion-Release** para automatizar o versionamento e a geração de changelogs. A versão é inferida a partir das tags do Git.
 

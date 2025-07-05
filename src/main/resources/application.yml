@@ -11,8 +11,12 @@ spring:
       ddl-auto: validate
     show-sql: true
 
-application:
-  info:
-    title: Joseph API
-    version: v1.0.0
-    description: API para gestão de finanças pessoais.
+springdoc:
+  api-docs:
+    path: /api-docs
+    info:
+      title: Joseph API
+      description: API para gestão de finanças pessoais
+      version: v1.0.0
+  swagger-ui:
+    path: /docs

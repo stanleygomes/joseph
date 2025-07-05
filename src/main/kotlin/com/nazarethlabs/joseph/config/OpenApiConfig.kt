@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class OpenApiConfig(
-    @Value("\${application.info.title}")
+    @Value("\${springdoc.api-docs.info.title}")
     private val title: String,
 
-    @Value("\${application.info.version}")
+    @Value("\${springdoc.api-docs.info.version}")
     private val version: String,
 
-    @Value("\${application.info.description}")
+    @Value("\${springdoc.api-docs.info.description}")
     private val description: String,
 ) {
     private fun buildApiInfo(): Info {
