@@ -111,6 +111,18 @@ Com a aplicação em execução, você pode acessar a documentação através do
 - `./gradlew build` — Compila o projeto
 - `./gradlew test` — Executa os testes
 
+### Testes Unitários 🧪
+
+O projeto utiliza o JUnit 5 e o Mockito para testes unitários em Kotlin. Os testes estão localizados no diretório `src/test/kotlin`.
+
+Para executar todos os testes unitários, utilize:
+
+```sh
+./gradlew test
+```
+
+Os relatórios de teste são gerados em `build/reports/tests/test/index.html`.
+
 ### Qualidade de Código com Ktlint 🎨
 
 O projeto utiliza o Ktlint para garantir um estilo de código consistente.
@@ -185,7 +197,7 @@ Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repo
   ```bash
   git push origin feature/minha-nova-feature
   ```
-4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descrição deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
+4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descri��ão deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
 
 -----
 
