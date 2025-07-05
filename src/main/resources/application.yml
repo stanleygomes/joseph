@@ -11,6 +11,10 @@ spring:
       ddl-auto: validate
     show-sql: true
 
+server:
+  servlet:
+    context-path: /api
+
 springdoc:
   api-docs:
     path: /api-docs
