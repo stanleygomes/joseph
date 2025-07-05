@@ -1,6 +1,6 @@
 spring:
   application:
-    name: joseph
+    name: joseph-api
   datasource:
     url: jdbc:postgresql://localhost:5555/joseph
     username: joseph
@@ -11,6 +11,8 @@ spring:
       ddl-auto: validate
     show-sql: true
 
-info:
-  app:
-    version: '@project.version@'
+application:
+  info:
+    title: Joseph API
+    version: v1.0.0
+    description: API para gestão de finanças pessoais.
