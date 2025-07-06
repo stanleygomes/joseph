@@ -1,12 +1,12 @@
 # Joseph 🧑‍💻
 
-Projeto Spring Boot + Kotlin 🚀
-
-Este projeto é um exemplo básico de aplicação Spring Boot escrita em Kotlin, configurada para rodar com Java 21.
-
 ## Sobre o projeto 📈
 
-Joseph é uma aplicação para cuidar de finanças pessoais, com foco inicial em ações (bolsa de valores). O objetivo é ajudar no controle, análise e acompanhamento de investimentos.
+Joseph é uma aplicação para cuidar de finanças pessoais, com foco em ações (bolsa de valores). O objetivo é ajudar no controle, análise e acompanhamento de investimentos.
+
+<div align="center">
+  <img src="assets/images/logo-banner.png" alt="Logo do Joseph"/>
+</div>
 
 ### Motivação do nome 🏺
 
