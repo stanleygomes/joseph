@@ -24,3 +24,8 @@ springdoc:
       version: v1.0.0
   swagger-ui:
     path: /docs
+
+integration:
+  brapi:
+    base-url: https://brapi.dev/api
+    token: XXXXXXXXXXXXXXXXXXXXXXX
