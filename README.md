@@ -1,7 +1,5 @@
 # Joseph 🧑‍💻
 
-Projeto Spring Boot + Kotlin 🚀
-
 Este projeto é um exemplo básico de aplicação Spring Boot escrita em Kotlin, configurada para rodar com Java 21.
 
 ## Sobre o projeto 📈
