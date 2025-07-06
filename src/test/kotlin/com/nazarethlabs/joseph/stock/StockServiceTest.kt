@@ -1,5 +1,6 @@
 package com.nazarethlabs.joseph.stock
 
+import com.nazarethlabs.joseph.core.exceptions.ResourceAlreadyExistsException
 import com.nazarethlabs.joseph.core.exceptions.ResourceNotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -14,10 +15,13 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.Instant
 import java.util.Optional
 import java.util.UUID
+import kotlin.test.assertNull
 
 @ExtendWith(MockitoExtension::class)
 class StockServiceTest {
@@ -31,24 +35,63 @@ class StockServiceTest {
     @Nested
     @DisplayName("createStock")
     inner class CreateStock {
-        @Test
-        fun `deve criar e salvar uma ação com sucesso`() {
-            val request = CreateStockRequest(ticker = "MGLU3", companyName = "Magazine Luiza")
-            val stockToBeSaved = Stock(
-                id = UUID.randomUUID(),
-                ticker = request.ticker,
-                companyName = request.companyName
-            )
 
-            `when`(stockRepository.save(any())).thenReturn(stockToBeSaved)
+        @Test
+        fun `deve criar uma nova ação quando o ticker não existir`() {
+            val request = CreateStockRequest(ticker = "MGLU3", companyName = "Magazine Luiza")
+            val newStock = Stock(id = UUID.randomUUID(), ticker = request.ticker, companyName = request.companyName)
+
+            `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(null)
+            `when`(stockRepository.save(any())).thenReturn(newStock)
 
             val result = stockService.createStock(request)
 
-            assertEquals(stockToBeSaved.id, result.id)
+            assertEquals(newStock.id, result.id)
             assertEquals("MGLU3", result.ticker)
-            assertEquals("Magazine Luiza", result.companyName)
-
+            verify(stockRepository).findByTickerIncludingDeleted(request.ticker)
             verify(stockRepository).save(any())
+        }
+
+        @Test
+        fun `deve lançar ResourceAlreadyExistsException quando o ticker já existir e estiver ativo`() {
+            val request = CreateStockRequest(ticker = "PETR4", companyName = "Petrobras Nova")
+            val activeStock = Stock(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras Antiga", deletedAt = null)
+
+            `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(activeStock)
+
+            val exception = assertThrows<ResourceAlreadyExistsException> {
+                stockService.createStock(request)
+            }
+            assertEquals("Stock with ticker 'PETR4' already exists.", exception.message)
+
+            verify(stockRepository, never()).save(any())
+        }
+
+        @Test
+        fun `deve reativar e atualizar uma ação quando o ticker já existir e estiver deletado`() {
+            val request = CreateStockRequest(ticker = "OIBR3", companyName = "Oi S.A. (Nova)")
+            val deletedStock = Stock(
+                id = UUID.randomUUID(),
+                ticker = "OIBR3",
+                companyName = "Oi (Antiga)",
+                deletedAt = Instant.now()
+            )
+
+            `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(deletedStock)
+            `when`(stockRepository.save(any())).thenAnswer { it.getArgument(0) }
+
+            val result = stockService.createStock(request)
+
+            val stockCaptor = ArgumentCaptor.forClass(Stock::class.java)
+            verify(stockRepository).save(stockCaptor.capture())
+            val savedStock = stockCaptor.value
+
+            assertNull(savedStock.deletedAt, "A data de deleção deve ser nula (reativada)")
+            assertEquals("Oi S.A. (Nova)", savedStock.companyName, "O nome da empresa deve ser atualizado")
+            assertEquals(deletedStock.id, savedStock.id, "O ID deve ser o mesmo do registro existente")
+
+            assertEquals(deletedStock.id, result.id)
+            assertEquals("Oi S.A. (Nova)", result.companyName)
         }
     }
 
