@@ -203,4 +203,4 @@ Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repo
 
 ## 📜 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE.md` para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE.md](LICENSE.md) para mais detalhes.
