@@ -1,5 +1,6 @@
 package com.nazarethlabs.joseph.stock
 
+import com.nazarethlabs.joseph.core.exceptions.ResourceAlreadyExistsException
 import com.nazarethlabs.joseph.core.exceptions.ResourceNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -11,6 +12,21 @@ class StockService(
     private val stockRepository: StockRepository,
 ) {
     fun createStock(request: CreateStockRequest): StockResponse {
+        val existingStock = stockRepository.findByTickerIncludingDeleted(request.ticker)
+
+        if (existingStock != null) {
+            if (existingStock.deletedAt == null) {
+                throw ResourceAlreadyExistsException("Stock with ticker '${request.ticker}' already exists.")
+            } else {
+                existingStock.apply {
+                    this.companyName = request.companyName
+                    this.deletedAt = null
+                }
+                val savedStock = stockRepository.save(existingStock)
+                return savedStock.toResponse()
+            }
+        }
+
         val stock = Stock(ticker = request.ticker, companyName = request.companyName)
         val savedStock = stockRepository.save(stock)
         return savedStock.toResponse()
@@ -31,11 +47,4 @@ class StockService(
         stockToDelete.deletedAt = now()
         stockRepository.save(stockToDelete)
     }
-
-    private fun Stock.toResponse(): StockResponse =
-        StockResponse(
-            id = this.id!!,
-            ticker = this.ticker,
-            companyName = this.companyName
-        )
 }
