@@ -66,7 +66,3 @@ tasks.register("generateChangelog", Exec::class) {
     commandLine("conventional-changelog", "-p", "eslint", "-i", "CHANGELOG.md", "-s", "--release-count", "1", "append", "true")
     isIgnoreExitValue = true
 }
-
-tasks.processResources {
-    expand(project.properties)
-}

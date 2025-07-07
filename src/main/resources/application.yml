@@ -28,4 +28,4 @@ springdoc:
 integration:
   brapi:
     base-url: https://brapi.dev/api
-    token: XXXXXXXXXXXXXXXXXXXXXXX
+    token: ${BRAPI_TOKEN:abc123}
