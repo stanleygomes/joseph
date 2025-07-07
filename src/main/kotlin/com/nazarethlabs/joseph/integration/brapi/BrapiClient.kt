@@ -2,6 +2,8 @@ package com.nazarethlabs.joseph.integration.brapi
 
 import com.nazarethlabs.joseph.core.client.HttpClient
 import com.nazarethlabs.joseph.core.port.StockQuoteProvider
+import com.nazarethlabs.joseph.stockquote.StockQuoteQueryResponse
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -11,8 +13,9 @@ class BrapiClient(
     @Qualifier("brapiHttpClient")
     private val client: HttpClient,
 ) : StockQuoteProvider {
+    private val logger = LoggerFactory.getLogger(BrapiClient::class.java)
 
-    override fun getQuotes(tickers: List<String>): List<BrapiQuoteResult> {
+    override fun getQuotes(tickers: List<String>): List<StockQuoteQueryResponse> {
         if (tickers.isEmpty()) {
             return emptyList()
         }
@@ -25,14 +28,19 @@ class BrapiClient(
             pathVariables = mapOf("tickers" to tickersParam)
         )
 
-        return response?.results ?: emptyList()
+        if (response == null || response.results.isEmpty()) {
+            logger.info("No quotes found for tickers: $tickersParam")
+            return emptyList()
+        }
+
+        return response.results.map { result -> result.toCore() }
     }
 
-    override fun getQuote(ticker: String): Optional<BrapiQuoteResult> {
+    override fun getQuote(ticker: String): Optional<StockQuoteQueryResponse> {
         return getQuotes(listOf(ticker))
             .firstOrNull()
-            .let {
-                Optional.ofNullable(it)
+            .let { response ->
+                Optional.ofNullable(response)
             }
     }
 }
