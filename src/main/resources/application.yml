@@ -29,3 +29,8 @@ integration:
   brapi:
     base-url: https://brapi.dev/api
     token: ${BRAPI_TOKEN:abc123}
+  resend:
+    base-url: https://api.resend.com
+    api-key: ${RESEND_APIKEY:abc123}
+    config:
+      batch-size: 50

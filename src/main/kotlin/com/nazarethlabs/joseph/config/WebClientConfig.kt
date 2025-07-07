@@ -17,6 +17,12 @@ class WebClientConfig {
     @Value("\${integration.brapi.token}")
     private lateinit var brapiToken: String
 
+    @Value("\${integration.resend.base-url}")
+    private lateinit var resendBaseUrl: String
+
+    @Value("\${integration.resend.api-key}")
+    private lateinit var resendApiKey: String
+
     @Bean
     fun brapiWebClient(builder: WebClient.Builder): WebClient {
         return builder
@@ -29,6 +35,23 @@ class WebClientConfig {
     @Qualifier("brapiHttpClient")
     fun brapiHttpClient(
         @Qualifier("brapiWebClient") webClient: WebClient,
+    ): HttpClient {
+        return WebClientAdapter(webClient)
+    }
+
+    @Bean
+    fun resendWebClient(builder: WebClient.Builder): WebClient {
+        return builder
+            .baseUrl(resendBaseUrl)
+            .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer $resendApiKey")
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+            .build()
+    }
+
+    @Bean
+    @Qualifier("resendHttpClient")
+    fun resendHttpClient(
+        @Qualifier("resendWebClient") webClient: WebClient,
     ): HttpClient {
         return WebClientAdapter(webClient)
     }
