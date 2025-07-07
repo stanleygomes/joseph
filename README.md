@@ -219,7 +219,9 @@ Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repo
   ```bash
   git push origin feature/minha-nova-feature
   ```
-4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descri��ão deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
+4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descrição deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
+
+    > **Importante:** O Pull Request só será aceito se passar por todos os checks automáticos definidos no workflow `pr-checks.yml`.
 
 -----
 
