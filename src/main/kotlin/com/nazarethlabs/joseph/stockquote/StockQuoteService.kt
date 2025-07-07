@@ -67,7 +67,7 @@ class StockQuoteService(
 
         return stocks.firstOrNull { stock ->
             stockQuotes
-                .none { quote -> quote.stock?.id == stock.id }
+                .none { quote -> quote.stock!!.id == stock.id }
         }
     }
 

@@ -55,7 +55,7 @@ class StockController(private val stockService: StockService) {
     )
     @GetMapping("/{id}")
     fun getStockById(@PathVariable id: UUID): ResponseEntity<StockResponse> =
-        stockService.getStockById(id)?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+        ResponseEntity.ok(stockService.getStockById(id))
 
     @Operation(
         summary = "Exclui uma ação",
