@@ -106,12 +106,34 @@ Com a aplicação em execução, você pode acessar a documentação através do
 - [Swagger UI (Interface Gráfica)](http://localhost:8080/docs)
 - [Definição OpenAPI (JSON)](http://localhost:8080/api-docs)
 
-## Scripts úteis ⚙️
+## Variáveis de Ambiente e Configurações Sensíveis 🔐
 
-- `./gradlew build` — Compila o projeto
-- `./gradlew test` — Executa os testes
+Este projeto utiliza variáveis de ambiente para armazenar informações sensíveis, como tokens de API e chaves secretas. **Nunca coloque valores sensíveis diretamente no arquivo `application.yml` versionado!**
 
-### Testes Unitários 🧪
+### Como configurar
+
+1. No arquivo `application.yml`, as configurações sensíveis são referenciadas assim:
+
+```yaml
+integration:
+  brapi:
+    base-url: https://brapi.dev/api
+    token: ${BRAPI_TOKEN}
+  resend:
+    base-url: https://api.resend.com
+    api-key: ${RESEND_API_KEY}
+```
+
+2. Antes de rodar a aplicação, defina as variáveis de ambiente no seu terminal ou na sua IDE. Por exemplo, no terminal Linux ou macOS, você pode fazer isso assim:
+
+```sh
+export BRAPI_TOKEN=seu_token_aqui
+export RESEND_API_KEY=sua_api_key_aqui
+```
+
+3. Nunca faça commit de arquivos com dados sensíveis! Use sempre variáveis de ambiente ou arquivos ignorados pelo Git.
+
+## Testes Unitários 🧪
 
 O projeto utiliza o JUnit 5 e o Mockito para testes unitários em Kotlin. Os testes estão localizados no diretório `src/test/kotlin`.
 
@@ -123,7 +145,7 @@ Para executar todos os testes unitários, utilize:
 
 Os relatórios de teste são gerados em `build/reports/tests/test/index.html`.
 
-### Qualidade de Código com Ktlint 🎨
+## Qualidade de Código com Ktlint 🎨
 
 O projeto utiliza o Ktlint para garantir um estilo de código consistente.
 - `./gradlew ktlintCheck` — Verifica se o código está em conformidade com as regras.
