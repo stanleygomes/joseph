@@ -4,5 +4,5 @@ fun Stock.toResponse(): StockResponse =
     StockResponse(
         id = this.id!!,
         ticker = this.ticker,
-        companyName = this.companyName
+        companyName = this.companyName,
     )

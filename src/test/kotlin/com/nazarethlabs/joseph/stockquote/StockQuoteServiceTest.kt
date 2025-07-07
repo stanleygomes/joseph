@@ -22,7 +22,6 @@ import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 class StockQuoteServiceTest {
-
     @Mock
     private lateinit var stockQuoteRepository: StockQuoteRepository
 
@@ -44,22 +43,24 @@ class StockQuoteServiceTest {
         @Test
         fun `deve retornar mensagem de sucesso ao atualizar cotação pendente`() {
             val today = LocalDate.now()
-            val quoteResponse = StockQuoteQueryResponse(
-                openPrice = BigDecimal("10.00"),
-                highPrice = BigDecimal("12.00"),
-                lowPrice = BigDecimal("9.50"),
-                closePrice = BigDecimal("11.00"),
-                volume = 1000L
-            )
-            val stockQuote = StockQuote(
-                stock = stock,
-                quoteDate = today,
-                openPrice = quoteResponse.openPrice,
-                highPrice = quoteResponse.highPrice,
-                lowPrice = quoteResponse.lowPrice,
-                closePrice = quoteResponse.closePrice,
-                volume = quoteResponse.volume
-            )
+            val quoteResponse =
+                StockQuoteQueryResponse(
+                    openPrice = BigDecimal("10.00"),
+                    highPrice = BigDecimal("12.00"),
+                    lowPrice = BigDecimal("9.50"),
+                    closePrice = BigDecimal("11.00"),
+                    volume = 1000L,
+                )
+            val stockQuote =
+                StockQuote(
+                    stock = stock,
+                    quoteDate = today,
+                    openPrice = quoteResponse.openPrice,
+                    highPrice = quoteResponse.highPrice,
+                    lowPrice = quoteResponse.lowPrice,
+                    closePrice = quoteResponse.closePrice,
+                    volume = quoteResponse.volume,
+                )
             `when`(stockRepository.findAll()).thenReturn(listOf(stock))
             `when`(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
             `when`(stockQuoteProvider.getQuote(stock.ticker)).thenReturn(Optional.of(quoteResponse))
@@ -95,24 +96,28 @@ class StockQuoteServiceTest {
         @Test
         fun `deve retornar mensagem quando todas as ações já possuem cotação para hoje`() {
             val today = LocalDate.now()
-            val quoteResponse = StockQuoteQueryResponse(
-                openPrice = BigDecimal("10.00"),
-                highPrice = BigDecimal("12.00"),
-                lowPrice = BigDecimal("9.50"),
-                closePrice = BigDecimal("11.00"),
-                volume = 1000L
-            )
-            val stockQuote = StockQuote(
-                stock = stock,
-                quoteDate = today,
-                openPrice = quoteResponse.openPrice,
-                highPrice = quoteResponse.highPrice,
-                lowPrice = quoteResponse.lowPrice,
-                closePrice = quoteResponse.closePrice,
-                volume = quoteResponse.volume
-            )
+            val quoteResponse =
+                StockQuoteQueryResponse(
+                    openPrice = BigDecimal("10.00"),
+                    highPrice = BigDecimal("12.00"),
+                    lowPrice = BigDecimal("9.50"),
+                    closePrice = BigDecimal("11.00"),
+                    volume = 1000L,
+                )
+            val stockQuote =
+                StockQuote(
+                    stock = stock,
+                    quoteDate = today,
+                    openPrice = quoteResponse.openPrice,
+                    highPrice = quoteResponse.highPrice,
+                    lowPrice = quoteResponse.lowPrice,
+                    closePrice = quoteResponse.closePrice,
+                    volume = quoteResponse.volume,
+                )
             whenever(stockRepository.findAll()).thenReturn(listOf(stock))
-            whenever(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(listOf(stockQuote))
+            whenever(
+                stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today),
+            ).thenReturn(listOf(stockQuote))
 
             val result = stockQuoteService.updatePendingDayQuote()
 

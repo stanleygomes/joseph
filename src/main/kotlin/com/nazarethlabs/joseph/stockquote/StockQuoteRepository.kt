@@ -7,5 +7,8 @@ import java.util.UUID
 
 @Repository
 interface StockQuoteRepository : JpaRepository<StockQuote, UUID> {
-    fun findByStockIdInAndQuoteDate(stockIds: List<UUID>, date: LocalDate): List<StockQuote>
+    fun findByStockIdInAndQuoteDate(
+        stockIds: List<UUID>,
+        date: LocalDate,
+    ): List<StockQuote>
 }

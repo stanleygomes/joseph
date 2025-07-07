@@ -31,9 +31,11 @@ class StockQuoteControllerTest {
 
     @BeforeEach
     fun setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(stockQuoteController)
-            .setControllerAdvice(GlobalExceptionHandler())
-            .build()
+        mockMvc =
+            MockMvcBuilders
+                .standaloneSetup(stockQuoteController)
+                .setControllerAdvice(GlobalExceptionHandler())
+                .build()
     }
 
     @Test
@@ -41,11 +43,11 @@ class StockQuoteControllerTest {
         val response = StockQuotePendingResponse(message = "Stock quote for PETR4 updated successfully.")
         whenever(stockQuoteService.updatePendingDayQuote()).thenReturn(response)
 
-        mockMvc.perform(
-            post("/v1/stock-quotes/update-pending-day-quote")
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(status().isCreated)
+        mockMvc
+            .perform(
+                post("/v1/stock-quotes/update-pending-day-quote")
+                    .contentType(MediaType.APPLICATION_JSON),
+            ).andExpect(status().isCreated)
             .andExpect(jsonPath("$.message").value(response.message))
     }
 }

@@ -4,5 +4,5 @@ data class ResendEmailRequest(
     val from: String,
     val to: String,
     val subject: String,
-    val html: String
+    val html: String,
 )

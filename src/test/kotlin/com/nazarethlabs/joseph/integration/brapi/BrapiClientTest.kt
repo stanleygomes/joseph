@@ -19,19 +19,20 @@ class BrapiClientTest {
     @InjectMocks
     private lateinit var brapiClient: BrapiClient
 
-    private val brapiQuoteResult = BrapiQuoteResult(
-        symbol = "PETR4",
-        longName = "Petrobras",
-        shortName = "PETR4",
-        currency = "BRL",
-        regularMarketPrice = BigDecimal("10.00"),
-        regularMarketOpen = BigDecimal("9.50"),
-        regularMarketDayHigh = BigDecimal("10.50"),
-        regularMarketDayLow = BigDecimal("9.40"),
-        regularMarketVolume = 1000L,
-        marketCap = 1000000L,
-        logoUrl = null
-    )
+    private val brapiQuoteResult =
+        BrapiQuoteResult(
+            symbol = "PETR4",
+            longName = "Petrobras",
+            shortName = "PETR4",
+            currency = "BRL",
+            regularMarketPrice = BigDecimal("10.00"),
+            regularMarketOpen = BigDecimal("9.50"),
+            regularMarketDayHigh = BigDecimal("10.50"),
+            regularMarketDayLow = BigDecimal("9.40"),
+            regularMarketVolume = 1000L,
+            marketCap = 1000000L,
+            logoUrl = null,
+        )
     private val brapiQuoteResponse = BrapiQuoteResponse(results = listOf(brapiQuoteResult))
 
     @Test
@@ -42,11 +43,13 @@ class BrapiClientTest {
 
     @Test
     fun `getQuotes deve retornar lista vazia se resposta for nula`() {
-        whenever(httpClient.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to "PETR4")
-        )).thenReturn(null)
+        whenever(
+            httpClient.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to "PETR4"),
+            ),
+        ).thenReturn(null)
 
         val result = brapiClient.getQuotes(listOf("PETR4"))
         assertTrue(result.isEmpty())
@@ -54,11 +57,13 @@ class BrapiClientTest {
 
     @Test
     fun `getQuotes deve retornar lista vazia se results for vazio`() {
-        whenever(httpClient.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to "PETR4")
-        )).thenReturn(BrapiQuoteResponse(results = emptyList()))
+        whenever(
+            httpClient.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to "PETR4"),
+            ),
+        ).thenReturn(BrapiQuoteResponse(results = emptyList()))
 
         val result = brapiClient.getQuotes(listOf("PETR4"))
         assertTrue(result.isEmpty())
@@ -66,11 +71,13 @@ class BrapiClientTest {
 
     @Test
     fun `getQuotes deve retornar lista de StockQuoteQueryResponse quando houver resultados`() {
-        whenever(httpClient.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to "PETR4")
-        )).thenReturn(brapiQuoteResponse)
+        whenever(
+            httpClient.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to "PETR4"),
+            ),
+        ).thenReturn(brapiQuoteResponse)
 
         val result = brapiClient.getQuotes(listOf("PETR4"))
         assertEquals(1, result.size)
@@ -83,11 +90,13 @@ class BrapiClientTest {
 
     @Test
     fun `getQuote deve retornar Optional vazio se não houver resultado`() {
-        whenever(httpClient.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to "PETR4")
-        )).thenReturn(BrapiQuoteResponse(results = emptyList()))
+        whenever(
+            httpClient.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to "PETR4"),
+            ),
+        ).thenReturn(BrapiQuoteResponse(results = emptyList()))
 
         val result = brapiClient.getQuote("PETR4")
         assertTrue(result.isEmpty)
@@ -95,15 +104,16 @@ class BrapiClientTest {
 
     @Test
     fun `getQuote deve retornar Optional com StockQuoteQueryResponse se houver resultado`() {
-        whenever(httpClient.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to "PETR4")
-        )).thenReturn(brapiQuoteResponse)
+        whenever(
+            httpClient.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to "PETR4"),
+            ),
+        ).thenReturn(brapiQuoteResponse)
 
         val result = brapiClient.getQuote("PETR4")
         assertTrue(result.isPresent)
         assertEquals(BigDecimal("10.00").setScale(2), result.get().closePrice)
     }
 }
-

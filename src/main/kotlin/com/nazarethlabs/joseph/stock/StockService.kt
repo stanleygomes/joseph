@@ -35,14 +35,16 @@ class StockService(
     fun getAllStocks(): List<StockResponse> = stockRepository.findAll().map { it.toResponse() }
 
     fun getStockById(id: UUID): StockResponse {
-        val stock = stockRepository.findByIdOrNull(id)
-            ?: throw ResourceNotFoundException("Stock with ID $id not found")
+        val stock =
+            stockRepository.findByIdOrNull(id)
+                ?: throw ResourceNotFoundException("Stock with ID $id not found")
         return stock.toResponse()
     }
 
     fun deleteStock(id: UUID) {
-        val stockToDelete = stockRepository.findByIdOrNull(id)
-            ?: throw ResourceNotFoundException("Stock with ID $id not found")
+        val stockToDelete =
+            stockRepository.findByIdOrNull(id)
+                ?: throw ResourceNotFoundException("Stock with ID $id not found")
 
         stockToDelete.deletedAt = now()
         stockRepository.save(stockToDelete)

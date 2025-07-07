@@ -22,11 +22,12 @@ class BrapiClient(
 
         val tickersParam = tickers.joinToString(separator = ",")
 
-        val response = client.get(
-            path = "/quote/{tickers}",
-            responseType = BrapiQuoteResponse::class.java,
-            pathVariables = mapOf("tickers" to tickersParam)
-        )
+        val response =
+            client.get(
+                path = "/quote/{tickers}",
+                responseType = BrapiQuoteResponse::class.java,
+                pathVariables = mapOf("tickers" to tickersParam),
+            )
 
         if (response == null || response.results.isEmpty()) {
             logger.info("No quotes found for tickers: $tickersParam")
@@ -36,11 +37,10 @@ class BrapiClient(
         return response.results.map { result -> result.toCore() }
     }
 
-    override fun getQuote(ticker: String): Optional<StockQuoteQueryResponse> {
-        return getQuotes(listOf(ticker))
+    override fun getQuote(ticker: String): Optional<StockQuoteQueryResponse> =
+        getQuotes(listOf(ticker))
             .firstOrNull()
             .let { response ->
                 Optional.ofNullable(response)
             }
-    }
 }

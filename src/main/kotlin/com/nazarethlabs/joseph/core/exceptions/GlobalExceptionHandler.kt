@@ -26,7 +26,8 @@ class GlobalExceptionHandler {
     fun handleIntegrationException(ex: IntegrationException): ResponseEntity<Map<String, String?>> {
         logger.error("Downstream integration error", ex)
 
-        val body = mapOf("error" to "Ocorreu uma falha ao comunicar com um serviço externo. Tente novamente mais tarde.")
+        val body =
+            mapOf("error" to "Ocorreu uma falha ao comunicar com um serviço externo. Tente novamente mais tarde.")
         return ResponseEntity(body, HttpStatus.BAD_GATEWAY)
     }
 }

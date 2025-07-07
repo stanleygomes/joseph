@@ -23,34 +23,25 @@ data class StockQuote(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", nullable = false)
     @JsonBackReference
     val stock: Stock? = null,
-
     @Column(name = "quote_date", nullable = false)
     var quoteDate: LocalDate? = LocalDate.now(),
-
     @Column(name = "open_price")
     var openPrice: BigDecimal? = BigDecimal.ZERO,
-
     @Column(name = "high_price")
     var highPrice: BigDecimal? = BigDecimal.ZERO,
-
     @Column(name = "low_price")
     var lowPrice: BigDecimal? = BigDecimal.ZERO,
-
     @Column(name = "close_price", nullable = false)
     var closePrice: BigDecimal? = BigDecimal.ZERO,
-
     @Column(name = "volume")
     var volume: Long? = null,
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: Instant? = null,
-
     @Column(name = "deleted_at")
     var deletedAt: Instant? = null,
 )

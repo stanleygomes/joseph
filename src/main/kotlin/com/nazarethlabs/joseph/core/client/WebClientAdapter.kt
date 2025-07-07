@@ -18,33 +18,39 @@ class WebClientAdapter(
         responseType: Class<T>,
         pathVariables: Map<String, Any> = emptyMap(),
         queryParams: MultiValueMap<String, String>? = null,
-        requestBody: Any? = null
+        requestBody: Any? = null,
     ): T? {
         try {
-            val requestSpec = webClient.method(org.springframework.http.HttpMethod.valueOf(method))
-                .uri { uriBuilder ->
-                    var builder = uriBuilder.path(path)
-                    if (queryParams != null) {
-                        builder = builder.queryParams(queryParams)
+            val requestSpec =
+                webClient
+                    .method(
+                        org.springframework.http.HttpMethod
+                            .valueOf(method),
+                    ).uri { uriBuilder ->
+                        var builder = uriBuilder.path(path)
+                        if (queryParams != null) {
+                            builder = builder.queryParams(queryParams)
+                        }
+                        builder.build(pathVariables)
                     }
-                    builder.build(pathVariables)
-                }
 
-            val responseSpec = if (requestBody != null) {
-                requestSpec.bodyValue(requestBody)
-            } else {
-                requestSpec
-            }.retrieve()
-                .onStatus(
-                    { it.isError },
-                    { clientResponse ->
-                        clientResponse.bodyToMono<Map<String, Any>>()
-                            .flatMap { errorBody ->
-                                val message = errorBody["message"]?.toString() ?: "Unknown API error"
-                                Mono.error(IntegrationException("API Error: $message"))
-                            }
-                    }
-                )
+            val responseSpec =
+                if (requestBody != null) {
+                    requestSpec.bodyValue(requestBody)
+                } else {
+                    requestSpec
+                }.retrieve()
+                    .onStatus(
+                        { it.isError },
+                        { clientResponse ->
+                            clientResponse
+                                .bodyToMono<Map<String, Any>>()
+                                .flatMap { errorBody ->
+                                    val message = errorBody["message"]?.toString() ?: "Unknown API error"
+                                    Mono.error(IntegrationException("API Error: $message"))
+                                }
+                        },
+                    )
 
             return responseSpec.bodyToMono(responseType).block()
         } catch (e: Exception) {
@@ -63,25 +69,27 @@ class WebClientAdapter(
         path: String,
         responseType: Class<T>,
         pathVariables: Map<String, Any>,
-        queryParams: MultiValueMap<String, String>
-    ): T? = executeRequest(
-        method = "GET",
-        path = path,
-        responseType = responseType,
-        pathVariables = pathVariables,
-        queryParams = queryParams
-    )
+        queryParams: MultiValueMap<String, String>,
+    ): T? =
+        executeRequest(
+            method = "GET",
+            path = path,
+            responseType = responseType,
+            pathVariables = pathVariables,
+            queryParams = queryParams,
+        )
 
     override fun <T> post(
         path: String,
         request: Any?,
         responseType: Class<T>,
-        pathVariables: Map<String, Any>
-    ): T? = executeRequest(
-        method = "POST",
-        path = path,
-        responseType = responseType,
-        pathVariables = pathVariables,
-        requestBody = request
-    )
+        pathVariables: Map<String, Any>,
+    ): T? =
+        executeRequest(
+            method = "POST",
+            path = path,
+            responseType = responseType,
+            pathVariables = pathVariables,
+            requestBody = request,
+        )
 }

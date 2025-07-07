@@ -62,13 +62,19 @@ tasks.jacocoTestReport.configure {
         files(
             sourceSets.main.get().output.asFileTree.matching {
                 exclude(
-                        "**/core/client/**",
-                    "**/JosephApplication*"
+                    "**/core/client/**",
+                    "**/JosephApplication*",
                 )
-            }
-        )
+            },
+        ),
     )
-    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+    sourceDirectories.setFrom(
+        files(
+            sourceSets.main
+                .get()
+                .allSource.srcDirs,
+        ),
+    )
     executionData.setFrom(files(layout.buildDirectory.file("jacoco/test.exec")))
 }
 

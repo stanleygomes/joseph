@@ -10,26 +10,29 @@ import org.springframework.stereotype.Component
 class ResendClient(
     @Qualifier("resendHttpClient")
     private val client: HttpClient,
-
     @Value("\${integration.resend.config.batch-size}")
-    private var batchSize: Int
+    private var batchSize: Int,
 ) {
     private val logger = LoggerFactory.getLogger(ResendClient::class.java)
 
-    fun sendEmail(request: ResendEmailRequest): ResendEmailResponse? {
-        return try {
+    fun sendEmail(request: ResendEmailRequest): ResendEmailResponse? =
+        try {
             client.post(
                 path = "/emails",
                 request = request,
-                responseType = ResendEmailResponse::class.java
+                responseType = ResendEmailResponse::class.java,
             )
         } catch (e: Exception) {
             logger.error("Failed to send email via Resend API", e)
             null
         }
-    }
 
-    fun sendBulkEmails(emailList: List<String>, subject: String, htmlBody: String, from: String): List<Any?> {
+    fun sendBulkEmails(
+        emailList: List<String>,
+        subject: String,
+        htmlBody: String,
+        from: String,
+    ): List<Any?> {
         val results = mutableListOf<Any?>()
         var i = 0
 
@@ -40,7 +43,7 @@ class ResendClient(
                 val result = sendWithParams(batch, subject, htmlBody, from)
                 results.add(result)
             } catch (e: Exception) {
-                logger.error("Error sending emails batch ([${i}[ - [${i + batch.size - 1}):", e)
+                logger.error("Error sending emails batch ([$i[ - [${i + batch.size - 1}):", e)
                 results.add(mapOf("error" to e.message, "batch" to batch))
             }
 
@@ -50,13 +53,19 @@ class ResendClient(
         return results
     }
 
-    private fun sendWithParams(emailToList: List<String>, subject: String, htmlBody: String, from: String): Any? {
-        val request = ResendEmailRequest(
-            from = from,
-            to = emailToList.joinToString(","),
-            subject = subject,
-            html = htmlBody
-        )
+    private fun sendWithParams(
+        emailToList: List<String>,
+        subject: String,
+        htmlBody: String,
+        from: String,
+    ): Any? {
+        val request =
+            ResendEmailRequest(
+                from = from,
+                to = emailToList.joinToString(","),
+                subject = subject,
+                html = htmlBody,
+            )
         val response = sendEmail(request)
         if (response?.message != null && response.message.contains("error", ignoreCase = true)) {
             logger.error("Error in response of sending email: ${response.message}")

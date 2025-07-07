@@ -58,6 +58,9 @@ class GlobalExceptionHandlerTest {
         val body = responseEntity.body
         assertNotNull(body)
         assertEquals(1, body?.size)
-        assertEquals("Ocorreu uma falha ao comunicar com um serviço externo. Tente novamente mais tarde.", body?.get("error"))
+        assertEquals(
+            "Ocorreu uma falha ao comunicar com um serviço externo. Tente novamente mais tarde.",
+            body?.get("error"),
+        )
     }
 }

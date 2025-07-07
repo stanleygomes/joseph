@@ -15,20 +15,23 @@ class StockQuoteService(
 ) {
     @Transactional
     fun updatePendingDayQuote(): StockQuotePendingResponse {
-        val stockWithoutQuote = this.getStockPendingQuoteForToday()
-            ?: return StockQuotePendingResponse(
-                message = "No stock found without quote for today."
-            )
+        val stockWithoutQuote =
+            this.getStockPendingQuoteForToday()
+                ?: return StockQuotePendingResponse(
+                    message = "No stock found without quote for today.",
+                )
 
-        val quoteResponse = this.getQuoteFromProvider(stockWithoutQuote)
-            ?: return StockQuotePendingResponse(
-                message = "No quote found for stock: ${stockWithoutQuote.ticker}."
-            )
+        val quoteResponse =
+            this.getQuoteFromProvider(stockWithoutQuote)
+                ?: return StockQuotePendingResponse(
+                    message = "No quote found for stock: ${stockWithoutQuote.ticker}.",
+                )
 
-        val stockQuote = this.buildStockQuote(
-            stock = stockWithoutQuote,
-            quoteResponse = quoteResponse
-        )
+        val stockQuote =
+            this.buildStockQuote(
+                stock = stockWithoutQuote,
+                quoteResponse = quoteResponse,
+            )
 
         this.save(stockQuote)
 
@@ -37,9 +40,7 @@ class StockQuoteService(
         )
     }
 
-    private fun getDateNow(): LocalDate {
-        return LocalDate.now()
-    }
+    private fun getDateNow(): LocalDate = LocalDate.now()
 
     private fun save(stockQuote: StockQuote) {
         stockQuoteRepository.save(stockQuote)
@@ -47,18 +48,17 @@ class StockQuoteService(
 
     private fun buildStockQuote(
         stock: Stock,
-        quoteResponse: StockQuoteQueryResponse
-    ): StockQuote {
-        return StockQuote(
+        quoteResponse: StockQuoteQueryResponse,
+    ): StockQuote =
+        StockQuote(
             stock = stock,
             quoteDate = this.getDateNow(),
             openPrice = quoteResponse.openPrice,
             highPrice = quoteResponse.highPrice,
             lowPrice = quoteResponse.lowPrice,
             closePrice = quoteResponse.closePrice,
-            volume = quoteResponse.volume
+            volume = quoteResponse.volume,
         )
-    }
 
     private fun getStockPendingQuoteForToday(): Stock? {
         val today = this.getDateNow()
@@ -71,13 +71,16 @@ class StockQuoteService(
         }
     }
 
-    private fun getStockQuotesByDateAndStockIds(date: LocalDate, stocks: List<Stock>): List<StockQuote> {
+    private fun getStockQuotesByDateAndStockIds(
+        date: LocalDate,
+        stocks: List<Stock>,
+    ): List<StockQuote> {
         val stockIds = stocks.mapNotNull { it.id }
         return stockQuoteRepository.findByStockIdInAndQuoteDate(stockIds, date)
     }
 
-    private fun getQuoteFromProvider(stock: Stock): StockQuoteQueryResponse? {
-        return stockQuoteProvider.getQuote(stock.ticker)
+    private fun getQuoteFromProvider(stock: Stock): StockQuoteQueryResponse? =
+        stockQuoteProvider
+            .getQuote(stock.ticker)
             .orElse(null)
-    }
 }

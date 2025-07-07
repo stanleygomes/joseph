@@ -25,7 +25,6 @@ import kotlin.test.assertNull
 
 @ExtendWith(MockitoExtension::class)
 class StockServiceTest {
-
     @Mock
     private lateinit var stockRepository: StockRepository
 
@@ -35,7 +34,6 @@ class StockServiceTest {
     @Nested
     @DisplayName("createStock")
     inner class CreateStock {
-
         @Test
         fun `deve criar uma nova ação quando o ticker não existir`() {
             val request = CreateStockRequest(ticker = "MGLU3", companyName = "Magazine Luiza")
@@ -55,13 +53,15 @@ class StockServiceTest {
         @Test
         fun `deve lançar ResourceAlreadyExistsException quando o ticker já existir e estiver ativo`() {
             val request = CreateStockRequest(ticker = "PETR4", companyName = "Petrobras Nova")
-            val activeStock = Stock(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras Antiga", deletedAt = null)
+            val activeStock =
+                Stock(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras Antiga", deletedAt = null)
 
             `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(activeStock)
 
-            val exception = assertThrows<ResourceAlreadyExistsException> {
-                stockService.createStock(request)
-            }
+            val exception =
+                assertThrows<ResourceAlreadyExistsException> {
+                    stockService.createStock(request)
+                }
             assertEquals("Stock with ticker 'PETR4' already exists.", exception.message)
 
             verify(stockRepository, never()).save(any())
@@ -70,12 +70,13 @@ class StockServiceTest {
         @Test
         fun `deve reativar e atualizar uma ação quando o ticker já existir e estiver deletado`() {
             val request = CreateStockRequest(ticker = "OIBR3", companyName = "Oi S.A. (Nova)")
-            val deletedStock = Stock(
-                id = UUID.randomUUID(),
-                ticker = "OIBR3",
-                companyName = "Oi (Antiga)",
-                deletedAt = Instant.now()
-            )
+            val deletedStock =
+                Stock(
+                    id = UUID.randomUUID(),
+                    ticker = "OIBR3",
+                    companyName = "Oi (Antiga)",
+                    deletedAt = Instant.now(),
+                )
 
             `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(deletedStock)
             `when`(stockRepository.save(any())).thenAnswer { it.getArgument(0) }
@@ -100,10 +101,11 @@ class StockServiceTest {
     inner class GetAllStocks {
         @Test
         fun `deve retornar uma lista de ações quando houver ações cadastradas`() {
-            val stocksFromRepo = listOf(
-                Stock(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras"),
-                Stock(id = UUID.randomUUID(), ticker = "VALE3", companyName = "Vale")
-            )
+            val stocksFromRepo =
+                listOf(
+                    Stock(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras"),
+                    Stock(id = UUID.randomUUID(), ticker = "VALE3", companyName = "Vale"),
+                )
             whenever(stockRepository.findAll()).thenReturn(stocksFromRepo)
 
             val result = stockService.getAllStocks()
@@ -148,9 +150,10 @@ class StockServiceTest {
             val nonExistentId = UUID.randomUUID()
             whenever(stockRepository.findById(nonExistentId)).thenReturn(Optional.empty())
 
-            val exception = assertThrows<ResourceNotFoundException> {
-                stockService.getStockById(nonExistentId)
-            }
+            val exception =
+                assertThrows<ResourceNotFoundException> {
+                    stockService.getStockById(nonExistentId)
+                }
             assertEquals("Stock with ID $nonExistentId not found", exception.message)
         }
     }

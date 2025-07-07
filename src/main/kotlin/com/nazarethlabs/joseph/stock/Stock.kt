@@ -18,17 +18,13 @@ data class Stock(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
-
     @Column(nullable = false, unique = true)
     var ticker: String = "",
-
     @Column(nullable = false)
     var companyName: String = "",
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: Instant? = null,
-
     @Column(name = "deleted_at")
     var deletedAt: Instant? = null,
 )
