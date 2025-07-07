@@ -12,21 +12,29 @@ class WebClientAdapter(
 ) : HttpClient {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun <T> get(
+    private fun <T> executeRequest(
+        method: String,
         path: String,
         responseType: Class<T>,
-        pathVariables: Map<String, Any>,
-        queryParams: MultiValueMap<String, String>
+        pathVariables: Map<String, Any> = emptyMap(),
+        queryParams: MultiValueMap<String, String>? = null,
+        requestBody: Any? = null
     ): T? {
         try {
-            return webClient.get()
+            val requestSpec = webClient.method(org.springframework.http.HttpMethod.valueOf(method))
                 .uri { uriBuilder ->
-                    uriBuilder
-                        .path(path)
-                        .queryParams(queryParams)
-                        .build(pathVariables)
+                    var builder = uriBuilder.path(path)
+                    if (queryParams != null) {
+                        builder = builder.queryParams(queryParams)
+                    }
+                    builder.build(pathVariables)
                 }
-                .retrieve()
+
+            val responseSpec = if (requestBody != null) {
+                requestSpec.bodyValue(requestBody)
+            } else {
+                requestSpec
+            }.retrieve()
                 .onStatus(
                     { it.isError },
                     { clientResponse ->
@@ -37,10 +45,10 @@ class WebClientAdapter(
                             }
                     }
                 )
-                .bodyToMono(responseType)
-                .block()
+
+            return responseSpec.bodyToMono(responseType).block()
         } catch (e: Exception) {
-            val errorMessage = "Failed to execute GET request to path '$path'"
+            val errorMessage = "Failed to execute $method request to path '$path'"
             logger.error(errorMessage, e)
 
             if (e is IntegrationException) {
@@ -50,4 +58,30 @@ class WebClientAdapter(
             throw IntegrationException(errorMessage, e)
         }
     }
+
+    override fun <T> get(
+        path: String,
+        responseType: Class<T>,
+        pathVariables: Map<String, Any>,
+        queryParams: MultiValueMap<String, String>
+    ): T? = executeRequest(
+        method = "GET",
+        path = path,
+        responseType = responseType,
+        pathVariables = pathVariables,
+        queryParams = queryParams
+    )
+
+    override fun <T> post(
+        path: String,
+        request: Any?,
+        responseType: Class<T>,
+        pathVariables: Map<String, Any>
+    ): T? = executeRequest(
+        method = "POST",
+        path = path,
+        responseType = responseType,
+        pathVariables = pathVariables,
+        requestBody = request
+    )
 }
