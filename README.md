@@ -222,6 +222,8 @@ Nosso fluxo de contribuição é baseado em Pull Requests diretamente neste repo
 4.  **Abra um Pull Request** neste repositório. O título do PR deve ser claro e a descrição deve explicar o que foi feito, por que foi feito e como pode ser testado. Se o PR resolve uma Issue existente, mencione-a na descrição (ex: `Resolves #42`).
 
     > **Importante:** O Pull Request só será aceito se passar por todos os checks automáticos definidos no workflow `pr-checks.yml`.
+    >
+    > **Atenção:** A porcentagem mínima de cobertura de testes exigida pelo CI é **95%**.
 
 -----
 

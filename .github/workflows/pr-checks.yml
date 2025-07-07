@@ -74,8 +74,8 @@ jobs:
             PERCENT=0
           fi
           echo "Coverage percentage: $PERCENT%"
-          if [ "$PERCENT" -lt 80 ]; then
-            echo "Coverage below 80%. Actual: $PERCENT%"
+          if [ "$PERCENT" -lt 95 ]; then
+            echo "Coverage below 95%. Actual: $PERCENT%"
             exit 1
           fi
 
