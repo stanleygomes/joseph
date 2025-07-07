@@ -4,12 +4,11 @@ plugins {
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-    id("pl.allegro.tech.build.axion-release") version "1.17.1"
+    id("jacoco")
 }
 
 group = "com.nazarethlabs"
-// versão gerenciada pelo plugin Reckon a partir das tags do Git
-// version = "x.x.x"
+version = "x.x.x"
 
 java {
     toolchain {
@@ -45,6 +44,32 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+// Relatório de cobertura
+tasks.jacocoTestReport.configure {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    classDirectories.setFrom(
+        files(
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude(
+                        "**/core/client/**",
+                    "**/JosephApplication*"
+                )
+            }
+        )
+    )
+    sourceDirectories.setFrom(files(sourceSets.main.get().allSource.srcDirs))
+    executionData.setFrom(files(layout.buildDirectory.file("jacoco/test.exec")))
 }
 
 // o plugin usa o arquivo .editorconfig para as regras de formatação
@@ -57,12 +82,4 @@ ktlint {
 // a verificação do Ktlint é executada junto com a task 'check' (ex: ./gradlew build)
 tasks.check {
     dependsOn(tasks.ktlintCheck)
-}
-
-// tarefa para gerar o CHANGELOG.md usando conventional-changelog-cli
-// pré-requisito: npm install -g conventional-changelog-cli --registry=https://registry.npmjs.org/
-tasks.register("generateChangelog", Exec::class) {
-    description = "Gera o CHANGELOG.md a partir dos conventional commits."
-    commandLine("conventional-changelog", "-p", "eslint", "-i", "CHANGELOG.md", "-s", "--release-count", "1", "append", "true")
-    isIgnoreExitValue = true
 }
