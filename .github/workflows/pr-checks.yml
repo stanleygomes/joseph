@@ -60,7 +60,7 @@ jobs:
         run: ./gradlew test jacocoTestReport
       - name: Check coverage percentage
         run: |
-          COVERAGE=$(grep -oPm1 "(?<=<counter type=\"INSTRUCTION\" missed=\"[0-9]+\" covered=\")[0-9]+" build/reports/jacoco/test/jacocoTestReport.xml)
+          COVERAGE=$(awk -F'covered="' '/<counter type="INSTRUCTION"/ {split($2,a,"\""); print a[1]; exit}' build/reports/jacoco/test/jacocoTestReport.xml)
           if [ "$COVERAGE" -lt 80 ]; then
             echo "Coverage below 80%"
             exit 1
