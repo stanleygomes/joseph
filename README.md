@@ -10,6 +10,8 @@ Joseph é uma aplicação para cuidar de finanças pessoais, com foco em ações
 
 ### Motivação do nome 🏺
 
+
+
 O nome "Joseph" faz referência a José do Egito, personagem bíblico conhecido por sua sabedoria em administrar recursos e planejar para o futuro. Assim como José ajudou o Egito a se preparar para tempos de abundância e escassez, esta aplicação busca auxiliar no planejamento e gestão financeira.
 
 ## Arquitetura 🏗️
