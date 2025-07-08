@@ -4,7 +4,7 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "eslint",
+        "preset": "conventionalcommits",
         "releaseRules": [
           { "type": "feat", "release": "minor" },
           { "type": "fix", "release": "patch" },
@@ -20,7 +20,7 @@
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "eslint",
+        "preset": "conventionalcommits",
         "writerOpts": {
           "commitGroupsSort": "title",
           "commitsSort": ["scope", "subject"],
