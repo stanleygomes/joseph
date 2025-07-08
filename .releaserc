@@ -19,17 +19,23 @@
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "conventionalcommits",
-        "config": ".version-changelog.config.js"
+        "writerOpts": {
+          "commitsSort": ["scope", "subject"],
+          "types": [
+            { "type": "feat", "section": "Features" },
+            { "type": "fix", "section": "Bug Fixes" },
+            { "type": "test", "section": "Tests", "hidden": false },
+            { "type": "chore", "section": "Chores", "hidden": false },
+            { "type": "docs", "section": "Documentation", "hidden": false }
+          ]
+        }
       }
     ],
     [
       "@semantic-release/changelog",
       {
         "changelogFile": "CHANGELOG.md",
-        "changelogTitle": "# Changelog",
-        "preset": "conventionalcommits",
-        "config": ".version-changelog.config.js"
+        "changelogTitle": "# Changelog"
       }
     ],
     "@semantic-release/github",
