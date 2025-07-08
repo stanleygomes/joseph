@@ -30,7 +30,7 @@ jobs:
 
       - name: Install semantic-release and plugins
         run: |
-          npm install -g semantic-release @semantic-release/github @semantic-release/release-notes-generator @semantic-release/commit-analyzer @semantic-release/exec @semantic-release/changelog @semantic-release/git conventional-changelog-conventionalcommits
+          npm install -g semantic-release @semantic-release/github @semantic-release/release-notes-generator @semantic-release/commit-analyzer @semantic-release/exec @semantic-release/changelog @semantic-release/git conventional-changelog-conventionalcommits conventional-changelog-eslint
 
       - name: Ensure update-version.sh is executable
         run: chmod +x scripts/update-version.sh
