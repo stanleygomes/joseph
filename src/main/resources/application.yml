@@ -2,9 +2,9 @@ spring:
   application:
     name: joseph-api
   datasource:
-    url: jdbc:postgresql://localhost:5555/joseph
-    username: joseph
-    password: egypt-governor
+    url: ${DATABASE_URI:jdbc:postgresql://localhost:5555/joseph}
+    username: ${DATABASE_USERNAME:joseph}
+    password: ${DATABASE_PASSWORD:egypt-governor}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

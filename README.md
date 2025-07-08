@@ -27,7 +27,7 @@ Dentro de cada fatia, o código é organizado em 3 camadas principais:
 Essa estrutura promove alta coesão e baixo acoplamento entre as funcionalidades, facilitando a manutenção e a evolução do sistema.
 
 ## 📋 Requisitos
-- 
+
 - Java 21 ☕
 - Gradle 🛠️
 - Podman e Podman Compose 🐳
