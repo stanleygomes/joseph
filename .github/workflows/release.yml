@@ -8,6 +8,10 @@ on:
         required: false
         default: 'master'
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
