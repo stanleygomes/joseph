@@ -27,6 +27,18 @@ jobs:
         run: |
           npm install -g semantic-release @semantic-release/changelog @semantic-release/git semantic-release-gradle
 
+      - name: Set up Git user and remote with PAT
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/stanleygomes/joseph.git
+
+      - name: Show git remote and user
+        run: |
+          git remote -v
+          git config --get user.name
+          git config --get user.email
+
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
