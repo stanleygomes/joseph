@@ -1,0 +1,36 @@
+# {{version}} ({{date}})
+
+{{#if features}}
+### Features
+{{#each features}}
+* {{this.subject}} ({{this.hash}})
+{{/each}}
+{{/if}}
+
+{{#if fixes}}
+### Bug Fixes
+{{#each fixes}}
+* {{this.subject}} ({{this.hash}})
+{{/each}}
+{{/if}}
+
+{{#if chores}}
+### Chores
+{{#each chores}}
+* {{this.subject}} ({{this.hash}})
+{{/each}}
+{{/if}}
+
+{{#if docs}}
+### Documentation
+{{#each docs}}
+* {{this.subject}} ({{this.hash}})
+{{/each}}
+{{/if}}
+
+{{#if test}}
+### Tests
+{{#each test}}
+* {{this.subject}} ({{this.hash}})
+{{/each}}
+{{/if}}

@@ -20,13 +20,16 @@
       "@semantic-release/release-notes-generator",
       {
         "writerOpts": {
+          "mainTemplate": "./.changelog-template.hbs",
+          "commitGroupsSort": "title",
           "commitsSort": ["scope", "subject"],
+          "groupBy": "type",
           "types": [
             { "type": "feat", "section": "Features" },
             { "type": "fix", "section": "Bug Fixes" },
-            { "type": "test", "section": "Tests", "hidden": false },
-            { "type": "chore", "section": "Chores", "hidden": false },
-            { "type": "docs", "section": "Documentation", "hidden": false }
+            { "type": "test", "section": "Tests" },
+            { "type": "chore", "section": "Chores" },
+            { "type": "docs", "section": "Documentation" }
           ]
         }
       }
