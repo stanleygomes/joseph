@@ -15,17 +15,6 @@
       {
         "prepareCmd": "./scripts/update-version.sh ${nextRelease.version}"
       }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": [
-          "CHANGELOG.md",
-          "build.gradle.kts",
-          "src/main/resources/application.yml"
-        ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]"
-      }
     ]
   ]
 }
