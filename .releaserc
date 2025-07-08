@@ -8,9 +8,9 @@
         "releaseRules": [
           { "type": "feat", "release": "minor" },
           { "type": "fix", "release": "patch" },
-          { "type": "chore", "release": "patch" },
-          { "type": "docs", "release": "patch" },
-          { "type": "test", "release": "patch" }
+          { "type": "chore", "release": false },
+          { "type": "docs", "release": false },
+          { "type": "test", "release": false }
         ],
         "parserOpts": {
           "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
@@ -26,11 +26,11 @@
           "commitsSort": ["scope", "subject"],
           "groupBy": "type",
           "types": [
-            { "type": "feat", "section": "Features" },
-            { "type": "fix", "section": "Bug Fixes" },
-            { "type": "test", "section": "Tests" },
-            { "type": "chore", "section": "Chores" },
-            { "type": "docs", "section": "Documentation" }
+            { "type": "feat", "section": "Features", "group": "features" },
+            { "type": "fix", "section": "Bug Fixes", "group": "fixes" },
+            { "type": "test", "section": "Tests", "group": "tests" },
+            { "type": "chore", "section": "Chores", "group": "chores" },
+            { "type": "docs", "section": "Documentation", "group": "docs" }
           ]
         }
       }
