@@ -181,6 +181,7 @@ O projeto utiliza um fluxo automatizado de CI/CD para garantir qualidade, versio
   - Faz build do artefato final.
   - Publica/deploya para ambiente de staging/produção.
   - (Opcional) Notifica time, atualiza status, etc.
+  - Health check: `/actuator/health`
 - **Objetivo:** Garantir que só código validado, testado e versionado chegue ao ambiente de produção.
 
 ---
