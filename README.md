@@ -101,6 +101,8 @@ Ao iniciar a aplicação, o Flyway detectará este novo arquivo, executará o sc
 
 O projeto utiliza o Springdoc para gerar automaticamente a documentação da API no formato OpenAPI 3. Essa documentação é interativa e permite visualizar e testar todos os endpoints disponíveis diretamente pelo navegador.
 
+> **Atenção:** Todos os endpoints da API e o Swagger estão protegidos por autenticação OAuth2 via GitHub. Para acessar, é necessário autenticar-se com sua conta do GitHub.
+
 Com a aplicação em execução, você pode acessar a documentação através dos seguintes links:
 
 - [Swagger UI (Interface Gráfica)](http://localhost:8080/docs)
@@ -189,9 +191,9 @@ O projeto utiliza um fluxo automatizado de CI/CD para garantir qualidade, versio
 ## 🤝 Como contribuir
 
 1. Dev cria branch `feature/xxx`.
-2. Abre Pull Request (PR) para `master/main`.
+2. Abre Pull Request (PR) para `master`.
 3. Workflow de PR valida código (testes, lint, etc). Só pode dar merge se **todos os checks passarem**.
-4. Merge do PR na `master/main` dispara o workflow de release.
+4. Merge do PR na `master` dispara o workflow de release.
 5. Se houver `feat`/`fix`, gera nova tag, changelog, atualiza arquivos de versão e abre PR automático com essas alterações.
 6. Merge do PR automático de release.
 7. (Opcional) Workflow de deploy é disparado após merge desse PR ou após a criação da nova tag. Deploya para produção/staging.
