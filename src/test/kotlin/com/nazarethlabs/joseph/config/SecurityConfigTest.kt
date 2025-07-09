@@ -6,16 +6,12 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer
 import org.springframework.security.web.DefaultSecurityFilterChain
 
 class SecurityConfigTest {
     @Test
     fun `securityFilterChain should configure HttpSecurity as expected`() {
         val http = mock(HttpSecurity::class.java)
-        val csrfConfigurer = mock(CsrfConfigurer::class.java) as CsrfConfigurer<HttpSecurity>
-        val oauth2LoginConfigurer = mock(OAuth2LoginConfigurer::class.java) as OAuth2LoginConfigurer<HttpSecurity>
         val securityFilterChain = mock(DefaultSecurityFilterChain::class.java)
 
         `when`(http.csrf(any())).thenReturn(http)

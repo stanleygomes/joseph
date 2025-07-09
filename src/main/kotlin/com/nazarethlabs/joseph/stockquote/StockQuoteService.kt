@@ -1,7 +1,7 @@
 package com.nazarethlabs.joseph.stockquote
 
 import com.nazarethlabs.joseph.core.port.StockQuoteProvider
-import com.nazarethlabs.joseph.stock.Stock
+import com.nazarethlabs.joseph.stock.StockEntity
 import com.nazarethlabs.joseph.stock.StockRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +29,7 @@ class StockQuoteService(
 
         val stockQuote =
             this.buildStockQuote(
-                stock = stockWithoutQuote,
+                stockEntity = stockWithoutQuote,
                 quoteResponse = quoteResponse,
             )
 
@@ -42,16 +42,16 @@ class StockQuoteService(
 
     private fun getDateNow(): LocalDate = LocalDate.now()
 
-    private fun save(stockQuote: StockQuote) {
-        stockQuoteRepository.save(stockQuote)
+    private fun save(stockQuoteEntity: StockQuoteEntity) {
+        stockQuoteRepository.save(stockQuoteEntity)
     }
 
     private fun buildStockQuote(
-        stock: Stock,
+        stockEntity: StockEntity,
         quoteResponse: StockQuoteQueryResponse,
-    ): StockQuote =
-        StockQuote(
-            stock = stock,
+    ): StockQuoteEntity =
+        StockQuoteEntity(
+            stockEntity = stockEntity,
             quoteDate = this.getDateNow(),
             openPrice = quoteResponse.openPrice,
             highPrice = quoteResponse.highPrice,
@@ -60,27 +60,27 @@ class StockQuoteService(
             volume = quoteResponse.volume,
         )
 
-    private fun getStockPendingQuoteForToday(): Stock? {
+    private fun getStockPendingQuoteForToday(): StockEntity? {
         val today = this.getDateNow()
         val stocks = stockRepository.findAll()
-        val stockQuotes = this.getStockQuotesByDateAndStockIds(date = today, stocks = stocks)
+        val stockQuotes = this.getStockQuotesByDateAndStockIds(date = today, stockEntities = stocks)
 
         return stocks.firstOrNull { stock ->
             stockQuotes
-                .none { quote -> quote.stock!!.id == stock.id }
+                .none { quote -> quote.stockEntity!!.id == stock.id }
         }
     }
 
     private fun getStockQuotesByDateAndStockIds(
         date: LocalDate,
-        stocks: List<Stock>,
-    ): List<StockQuote> {
-        val stockIds = stocks.mapNotNull { it.id }
+        stockEntities: List<StockEntity>,
+    ): List<StockQuoteEntity> {
+        val stockIds = stockEntities.mapNotNull { it.id }
         return stockQuoteRepository.findByStockIdInAndQuoteDate(stockIds, date)
     }
 
-    private fun getQuoteFromProvider(stock: Stock): StockQuoteQueryResponse? =
+    private fun getQuoteFromProvider(stockEntity: StockEntity): StockQuoteQueryResponse? =
         stockQuoteProvider
-            .getQuote(stock.ticker)
+            .getQuote(stockEntity.ticker)
             .orElse(null)
 }

@@ -1,7 +1,7 @@
 package com.nazarethlabs.joseph.stockquote
 
 import com.nazarethlabs.joseph.core.port.StockQuoteProvider
-import com.nazarethlabs.joseph.stock.Stock
+import com.nazarethlabs.joseph.stock.StockEntity
 import com.nazarethlabs.joseph.stock.StockRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -35,7 +35,7 @@ class StockQuoteServiceTest {
     private lateinit var stockQuoteService: StockQuoteService
 
     private val stockId = UUID.randomUUID()
-    private val stock = Stock(id = stockId, ticker = "PETR4", companyName = "Petrobras")
+    private val stockEntity = StockEntity(id = stockId, ticker = "PETR4", companyName = "Petrobras")
 
     @Nested
     @DisplayName("updatePendingDayQuote")
@@ -51,9 +51,9 @@ class StockQuoteServiceTest {
                     closePrice = BigDecimal("11.00"),
                     volume = 1000L,
                 )
-            val stockQuote =
-                StockQuote(
-                    stock = stock,
+            val stockQuoteEntity =
+                StockQuoteEntity(
+                    stockEntity = stockEntity,
                     quoteDate = today,
                     openPrice = quoteResponse.openPrice,
                     highPrice = quoteResponse.highPrice,
@@ -61,10 +61,10 @@ class StockQuoteServiceTest {
                     closePrice = quoteResponse.closePrice,
                     volume = quoteResponse.volume,
                 )
-            `when`(stockRepository.findAll()).thenReturn(listOf(stock))
+            `when`(stockRepository.findAll()).thenReturn(listOf(stockEntity))
             `when`(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
-            `when`(stockQuoteProvider.getQuote(stock.ticker)).thenReturn(Optional.of(quoteResponse))
-            `when`(stockQuoteRepository.save(any())).thenReturn(stockQuote)
+            `when`(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.of(quoteResponse))
+            `when`(stockQuoteRepository.save(any())).thenReturn(stockQuoteEntity)
 
             val result = stockQuoteService.updatePendingDayQuote()
 
@@ -84,9 +84,9 @@ class StockQuoteServiceTest {
         @Test
         fun `deve retornar mensagem quando não encontra cotação para a ação`() {
             val today = LocalDate.now()
-            whenever(stockRepository.findAll()).thenReturn(listOf(stock))
+            whenever(stockRepository.findAll()).thenReturn(listOf(stockEntity))
             whenever(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
-            whenever(stockQuoteProvider.getQuote(stock.ticker)).thenReturn(Optional.empty())
+            whenever(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.empty())
 
             val result = stockQuoteService.updatePendingDayQuote()
 
@@ -104,9 +104,9 @@ class StockQuoteServiceTest {
                     closePrice = BigDecimal("11.00"),
                     volume = 1000L,
                 )
-            val stockQuote =
-                StockQuote(
-                    stock = stock,
+            val stockQuoteEntity =
+                StockQuoteEntity(
+                    stockEntity = stockEntity,
                     quoteDate = today,
                     openPrice = quoteResponse.openPrice,
                     highPrice = quoteResponse.highPrice,
@@ -114,10 +114,10 @@ class StockQuoteServiceTest {
                     closePrice = quoteResponse.closePrice,
                     volume = quoteResponse.volume,
                 )
-            whenever(stockRepository.findAll()).thenReturn(listOf(stock))
+            whenever(stockRepository.findAll()).thenReturn(listOf(stockEntity))
             whenever(
                 stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today),
-            ).thenReturn(listOf(stockQuote))
+            ).thenReturn(listOf(stockQuoteEntity))
 
             val result = stockQuoteService.updatePendingDayQuote()
 

@@ -70,6 +70,10 @@ tasks.jacocoTestReport.configure {
                 exclude(
                     "**/core/client/**",
                     "**/JosephApplication*",
+                    "**/*Entity*",
+                    "**/*Dto*",
+                    "**/*Request*",
+                    "**/*Response*",
                 )
             },
         ),
