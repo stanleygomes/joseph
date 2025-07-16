@@ -1,14 +1,16 @@
 package com.nazarethlabs.joseph.stockquote
 
+import com.nazarethlabs.joseph.core.port.EmailProvider
 import com.nazarethlabs.joseph.core.port.StockQuoteProvider
+import com.nazarethlabs.joseph.core.service.TemplateService
 import com.nazarethlabs.joseph.stock.StockEntity
 import com.nazarethlabs.joseph.stock.StockRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
@@ -22,6 +24,8 @@ import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 class StockQuoteServiceTest {
+    private lateinit var stockQuoteService: StockQuoteService
+
     @Mock
     private lateinit var stockQuoteRepository: StockQuoteRepository
 
@@ -31,11 +35,27 @@ class StockQuoteServiceTest {
     @Mock
     private lateinit var stockQuoteProvider: StockQuoteProvider
 
-    @InjectMocks
-    private lateinit var stockQuoteService: StockQuoteService
+    @Mock
+    private lateinit var templateService: TemplateService
+
+    @Mock
+    private lateinit var emailProvider: EmailProvider
 
     private val stockId = UUID.randomUUID()
     private val stockEntity = StockEntity(id = stockId, ticker = "PETR4", companyName = "Petrobras")
+    private val reportRecipient = "test@example.com"
+
+    @BeforeEach
+    fun setUp() {
+        stockQuoteService = StockQuoteService(
+            stockQuoteRepository,
+            stockRepository,
+            stockQuoteProvider,
+            templateService,
+            emailProvider,
+            reportRecipient
+        )
+    }
 
     @Nested
     @DisplayName("updatePendingDayQuote")
@@ -62,7 +82,7 @@ class StockQuoteServiceTest {
                     volume = quoteResponse.volume,
                 )
             `when`(stockRepository.findAll()).thenReturn(listOf(stockEntity))
-            `when`(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
+            `when`(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
             `when`(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.of(quoteResponse))
             `when`(stockQuoteRepository.save(any())).thenReturn(stockQuoteEntity)
 
@@ -85,7 +105,7 @@ class StockQuoteServiceTest {
         fun `deve retornar mensagem quando não encontra cotação para a ação`() {
             val today = LocalDate.now()
             whenever(stockRepository.findAll()).thenReturn(listOf(stockEntity))
-            whenever(stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
+            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
             whenever(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.empty())
 
             val result = stockQuoteService.updatePendingDayQuote()
@@ -116,7 +136,7 @@ class StockQuoteServiceTest {
                 )
             whenever(stockRepository.findAll()).thenReturn(listOf(stockEntity))
             whenever(
-                stockQuoteRepository.findByStockIdInAndQuoteDate(listOf(stockId), today),
+                stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today),
             ).thenReturn(listOf(stockQuoteEntity))
 
             val result = stockQuoteService.updatePendingDayQuote()
