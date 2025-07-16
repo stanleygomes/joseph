@@ -42,3 +42,5 @@ integration:
     api-key: ${RESEND_APIKEY:abc123}
     config:
       batch-size: 50
+    from: ${RESEND_FROM:JosephApi <onboarding@resend.dev>}
+    report-recipient: ${RESEND_REPORT_RECIPIENT:admin@seudominio.com}
