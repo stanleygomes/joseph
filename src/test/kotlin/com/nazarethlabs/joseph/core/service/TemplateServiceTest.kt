@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.atLeastOnce
 import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.atLeastOnce
 
 class TemplateServiceTest {
     private lateinit var templateService: TemplateService

@@ -15,7 +15,7 @@ class ResendClient(
     private var batchSize: Int,
     @Value("\${integration.resend.from}")
     private var emailFrom: String,
-): EmailProvider {
+) : EmailProvider {
     private val logger = LoggerFactory.getLogger(ResendClient::class.java)
 
     override fun send(

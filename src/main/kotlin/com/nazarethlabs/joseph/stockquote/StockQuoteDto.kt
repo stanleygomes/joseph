@@ -23,5 +23,5 @@ data class StockReportItem(
     val todayQuote: String,
     val yesterdayQuote: String,
     val percentChange: String,
-    val changeClass: String
+    val changeClass: String,
 )

@@ -47,14 +47,15 @@ class StockQuoteServiceTest {
 
     @BeforeEach
     fun setUp() {
-        stockQuoteService = StockQuoteService(
-            stockQuoteRepository,
-            stockRepository,
-            stockQuoteProvider,
-            templateService,
-            emailProvider,
-            reportRecipient
-        )
+        stockQuoteService =
+            StockQuoteService(
+                stockQuoteRepository,
+                stockRepository,
+                stockQuoteProvider,
+                templateService,
+                emailProvider,
+                reportRecipient,
+            )
     }
 
     @Nested
@@ -82,7 +83,9 @@ class StockQuoteServiceTest {
                     volume = quoteResponse.volume,
                 )
             `when`(stockRepository.findAll()).thenReturn(listOf(stockEntity))
-            `when`(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
+            `when`(
+                stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today),
+            ).thenReturn(emptyList())
             `when`(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.of(quoteResponse))
             `when`(stockQuoteRepository.save(any())).thenReturn(stockQuoteEntity)
 
@@ -105,7 +108,9 @@ class StockQuoteServiceTest {
         fun `deve retornar mensagem quando não encontra cotação para a ação`() {
             val today = LocalDate.now()
             whenever(stockRepository.findAll()).thenReturn(listOf(stockEntity))
-            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(emptyList())
+            whenever(
+                stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today),
+            ).thenReturn(emptyList())
             whenever(stockQuoteProvider.getQuote(stockEntity.ticker)).thenReturn(Optional.empty())
 
             val result = stockQuoteService.updatePendingDayQuote()
@@ -155,11 +160,16 @@ class StockQuoteServiceTest {
             val today = LocalDate.now()
             val yesterday = today.minusDays(1)
             val todayQuote = StockQuoteEntity(stockEntity = stock, quoteDate = today, closePrice = BigDecimal("10.00"))
-            val yesterdayQuote = StockQuoteEntity(stockEntity = stock, quoteDate = yesterday, closePrice = BigDecimal("8.00"))
+            val yesterdayQuote =
+                StockQuoteEntity(stockEntity = stock, quoteDate = yesterday, closePrice = BigDecimal("8.00"))
 
             whenever(stockRepository.findAll()).thenReturn(listOf(stock))
-            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(listOf(todayQuote))
-            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), yesterday)).thenReturn(listOf(yesterdayQuote))
+            whenever(
+                stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today),
+            ).thenReturn(listOf(todayQuote))
+            whenever(
+                stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), yesterday),
+            ).thenReturn(listOf(yesterdayQuote))
             whenever(templateService.compileTemplate(any(), any())).thenReturn("<html>report</html>")
 
             val result = stockQuoteService.sendQuoteReportEmail(7)
@@ -168,7 +178,7 @@ class StockQuoteServiceTest {
             verify(emailProvider).send(
                 any(),
                 any(),
-                any()
+                any(),
             )
             verify(templateService).compileTemplate(any(), any())
         }

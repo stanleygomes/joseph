@@ -37,7 +37,8 @@ class StockServiceTest {
         @Test
         fun `deve criar uma nova ação quando o ticker não existir`() {
             val request = CreateStockRequest(ticker = "MGLU3", companyName = "Magazine Luiza")
-            val newStockEntity = StockEntity(id = UUID.randomUUID(), ticker = request.ticker, companyName = request.companyName)
+            val newStockEntity =
+                StockEntity(id = UUID.randomUUID(), ticker = request.ticker, companyName = request.companyName)
 
             `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(null)
             `when`(stockRepository.save(any())).thenReturn(newStockEntity)
@@ -54,7 +55,12 @@ class StockServiceTest {
         fun `deve lançar ResourceAlreadyExistsException quando o ticker já existir e estiver ativo`() {
             val request = CreateStockRequest(ticker = "PETR4", companyName = "Petrobras Nova")
             val activeStockEntity =
-                StockEntity(id = UUID.randomUUID(), ticker = "PETR4", companyName = "Petrobras Antiga", deletedAt = null)
+                StockEntity(
+                    id = UUID.randomUUID(),
+                    ticker = "PETR4",
+                    companyName = "Petrobras Antiga",
+                    deletedAt = null,
+                )
 
             `when`(stockRepository.findByTickerIncludingDeleted(request.ticker)).thenReturn(activeStockEntity)
 
