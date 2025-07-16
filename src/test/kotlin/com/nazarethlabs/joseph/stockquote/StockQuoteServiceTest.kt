@@ -144,4 +144,33 @@ class StockQuoteServiceTest {
             assertEquals("No stock found without quote for today.", result.message)
         }
     }
+
+    @Nested
+    @DisplayName("sendQuoteReportEmail")
+    inner class SendQuoteReportEmail {
+        @Test
+        fun `should send report email with correct context and html`() {
+            val stock = stockEntity
+            val stockId = stock.id!!
+            val today = LocalDate.now()
+            val yesterday = today.minusDays(1)
+            val todayQuote = StockQuoteEntity(stockEntity = stock, quoteDate = today, closePrice = BigDecimal("10.00"))
+            val yesterdayQuote = StockQuoteEntity(stockEntity = stock, quoteDate = yesterday, closePrice = BigDecimal("8.00"))
+
+            whenever(stockRepository.findAll()).thenReturn(listOf(stock))
+            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), today)).thenReturn(listOf(todayQuote))
+            whenever(stockQuoteRepository.findByStockEntityIdInAndQuoteDate(listOf(stockId), yesterday)).thenReturn(listOf(yesterdayQuote))
+            whenever(templateService.compileTemplate(any(), any())).thenReturn("<html>report</html>")
+
+            val result = stockQuoteService.sendQuoteReportEmail(7)
+
+            assertEquals("Report sent successfully.", result.message)
+            verify(emailProvider).send(
+                any(),
+                any(),
+                any()
+            )
+            verify(templateService).compileTemplate(any(), any())
+        }
+    }
 }

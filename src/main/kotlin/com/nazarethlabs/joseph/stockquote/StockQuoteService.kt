@@ -113,22 +113,22 @@ class StockQuoteService(
         )
     }
 
-    fun getStockQuotesToday(stockIds: List<UUID>): List<StockQuoteEntity> {
+    private fun getStockQuotesToday(stockIds: List<UUID>): List<StockQuoteEntity> {
         val today = LocalDate.now()
         return this.getStockQuotesByDate(stockIds, today)
     }
 
-    fun getStockQuotesYesterday(stockIds: List<UUID>): List<StockQuoteEntity> {
+    private fun getStockQuotesYesterday(stockIds: List<UUID>): List<StockQuoteEntity> {
         val today = LocalDate.now()
         val yesterday = today.minusDays(1)
         return this.getStockQuotesByDate(stockIds, yesterday)
     }
 
-    fun getStockQuotesByDate(stockIds: List<UUID>, date: LocalDate): List<StockQuoteEntity> {
+    private fun getStockQuotesByDate(stockIds: List<UUID>, date: LocalDate): List<StockQuoteEntity> {
         return stockQuoteRepository.findByStockEntityIdInAndQuoteDate(stockIds, date)
     }
 
-    fun getStockQuotesDiff(
+    private fun getStockQuotesDiff(
         stocks: List<StockEntity>,
         quotesToday: List<StockQuoteEntity>,
         quotesYesterday: List<StockQuoteEntity>,
