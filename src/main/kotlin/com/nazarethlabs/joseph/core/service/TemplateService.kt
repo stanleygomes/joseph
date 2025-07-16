@@ -8,9 +8,11 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 @Service
-class TemplateService {
+class TemplateService(
+    private val templateStreamService: TemplateStreamService = TemplateStreamService()
+) {
     fun compileTemplate(templatePath: String, context: Any): String {
-        val templateStream = this.openStream(templatePath)
+        val templateStream = templateStreamService.openStream(templatePath)
         val mustache = this.compile(templateStream, templatePath)
 
         return this.buildHtml(mustache, context).also {
@@ -23,10 +25,6 @@ class TemplateService {
         mustache.execute(writer, context).flush()
 
         return writer.toString()
-    }
-
-    private fun openStream(templatePath: String): InputStream {
-        return ClassPathResource(templatePath).inputStream
     }
 
     private fun compile(templateStream: InputStream, templatePath: String): Mustache {
